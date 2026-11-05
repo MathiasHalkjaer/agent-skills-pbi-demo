@@ -39,3 +39,8 @@ Before deciding something the glossary doesn't cover, read references/decisions.
 
 ## Before you finish
 Run `python .claude/skills/model-standards/scripts/check_names.py` and fix everything it reports.
+
+## After each task
+List conventions you met that aren't in this skill, and mistakes you corrected. Propose each
+as an addition to the right reference file, with one example. Add agreed decisions to
+references/decisions.md with the date and the reason. Don't change this skill until I approve.
