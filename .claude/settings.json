@@ -1,0 +1,9 @@
+{
+  "hooks": {
+    "PreToolUse": [{ "matcher": "mcp__powerbi-modeling__.*",
+      "hooks": [{ "type": "command", "command": "python .claude/hooks/no_production.py" }] }],
+    "PostToolUse": [{ "matcher": "Edit|Write",
+      "hooks": [{ "type": "command", "command":
+        "python .claude/skills/model-standards/scripts/check_names.py --hook" }] }]
+  }
+}
