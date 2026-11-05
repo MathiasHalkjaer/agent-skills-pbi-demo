@@ -1,25 +1,51 @@
-table FactSales
+table Sales
 	lineageTag: 2499dfbc-a807-5d67-b65a-7afd6e23171b
 
-	measure TotalSales = SUM(FactSales[sales_amt])
+	/// Invoiced sales in EUR, including lines that were later returned.
+	measure 'Total Sales' = SUM(Sales[Sales Amount])
+		formatString: #,0
+		displayFolder: Revenue
 		lineageTag: c59a0f47-5911-54f2-8397-6aeeb54acd9c
 
-	measure total_cost = SUM(FactSales[cost_amt])
+	/// Cost of the goods sold, in EUR.
+	measure 'Total Cost' = SUM(Sales[Cost Amount])
+		formatString: #,0
+		displayFolder: Profitability
 		lineageTag: 2581a4ba-531f-5bae-bd19-0825fcf66611
 
-	measure Margin = DIVIDE([TotalSales]-[total_cost],[TotalSales])
+	/// Gross margin: sales minus cost, as a share of sales.
+	measure 'Margin %' = DIVIDE([Total Sales] - [Total Cost], [Total Sales])
+		formatString: 0.0%
+		displayFolder: Profitability
 		lineageTag: 41db49e9-f9da-5b88-ae89-7df24e59c661
 
-	measure NetSales = CALCULATE([TotalSales],FactSales[return_flag]=0)
+	/// Sales excluding returned lines. Finance's headline number.
+	measure 'Net Sales' = CALCULATE([Total Sales], Sales[Is Return] = 0)
+		formatString: #,0
+		displayFolder: Revenue
 		lineageTag: 639a238d-24de-5931-b8bd-dc6309e09411
 
-	measure 'Sales LY' = CALCULATE([TotalSales],SAMEPERIODLASTYEAR(DimDate[date_key]))
+	/// Total Sales for the same period last year.
+	measure 'Sales LY' = CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Date'[Date]))
+		formatString: #,0
+		displayFolder: Revenue
 		lineageTag: 7547b091-bb77-52ba-a727-8cd822c62dab
 
-	measure 'Sales Status' = IF([TotalSales]>50000,"High",IF([TotalSales]>20000,"Medium","Low"))
+	/// High above 50,000 EUR of sales, Medium above 20,000, otherwise Low.
+	measure 'Sales Status' =
+			VAR CurrentSales = [Total Sales]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        CurrentSales > 50000, "High",
+			        CurrentSales > 20000, "Medium",
+			        "Low"
+			    )
+		displayFolder: Indicators
 		lineageTag: 047e9307-affe-541d-9873-d579afe8100d
 
-	column order_id
+	/// The order's number from the ERP system.
+	column 'Order Number'
 		dataType: int64
 		lineageTag: e5184c7c-46be-5fc5-86fb-a47a00348466
 		summarizeBy: none
@@ -27,66 +53,80 @@ table FactSales
 
 		annotation SummarizationSetBy = Automatic
 
-	column order_date
+	/// Date the order was placed; links to Date.
+	column 'Order Date'
 		dataType: dateTime
 		formatString: yyyy-mm-dd
+		isHidden
 		lineageTag: 05174f2e-200e-5125-832b-5ffe1900d204
 		summarizeBy: none
 		sourceColumn: order_date
 
 		annotation SummarizationSetBy = Automatic
 
-	column cust_id
+	/// Links the order line to Customer.
+	column 'Customer Key'
 		dataType: int64
+		isHidden
 		lineageTag: bbd68f81-8167-5016-9d3d-1fc4f8b2ed9e
 		summarizeBy: none
 		sourceColumn: cust_id
 
 		annotation SummarizationSetBy = Automatic
 
-	column prod_id
+	/// Links the order line to Product.
+	column 'Product Key'
 		dataType: int64
+		isHidden
 		lineageTag: 07bb39db-df52-5cda-a2e2-8a32fe213bf3
 		summarizeBy: none
 		sourceColumn: prod_id
 
 		annotation SummarizationSetBy = Automatic
 
-	column qty
+	/// Units on the order line.
+	column Quantity
 		dataType: int64
+		displayFolder: Order details
 		lineageTag: 6c76ed16-9881-5496-945a-6d9f4e5eb2c4
 		summarizeBy: none
 		sourceColumn: qty
 
 		annotation SummarizationSetBy = Automatic
 
-	column sales_amt
+	/// Invoiced amount for the line, in EUR, before returns.
+	column 'Sales Amount'
 		dataType: double
 		formatString: #,0.00
+		displayFolder: Order details
 		lineageTag: fd63f8ee-7ebb-5752-88c0-670820c968fc
 		summarizeBy: none
 		sourceColumn: sales_amt
 
 		annotation SummarizationSetBy = Automatic
 
-	column cost_amt
+	/// Cost of the goods on the line, in EUR.
+	column 'Cost Amount'
 		dataType: double
 		formatString: #,0.00
+		displayFolder: Order details
 		lineageTag: 2a149cc2-318d-58bc-baee-b296bb2c18a3
 		summarizeBy: none
 		sourceColumn: cost_amt
 
 		annotation SummarizationSetBy = Automatic
 
-	column return_flag
+	/// 1 if the line was returned, otherwise 0.
+	column 'Is Return'
 		dataType: int64
+		displayFolder: Order details
 		lineageTag: b8162bed-4ff4-51cb-9698-556a78d77bde
 		summarizeBy: none
 		sourceColumn: return_flag
 
 		annotation SummarizationSetBy = Automatic
 
-	partition FactSales = m
+	partition Sales = m
 		mode: import
 		source =
 				let

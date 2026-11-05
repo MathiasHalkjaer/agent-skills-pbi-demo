@@ -1,7 +1,8 @@
-table DimDate
+table Date
 	lineageTag: 5b8c5cd5-a5d2-5ea0-8f0c-1bad1f8dd2e8
 
-	column date_key
+	/// Calendar date.
+	column Date
 		dataType: dateTime
 		formatString: yyyy-mm-dd
 		lineageTag: 655c3ae2-40c5-53cb-a364-95490fa9dfe8
@@ -10,7 +11,8 @@ table DimDate
 
 		annotation SummarizationSetBy = Automatic
 
-	column yr
+	/// Calendar year.
+	column Year
 		dataType: int64
 		lineageTag: f6576c0c-a0b8-5ac8-9743-c5abc9289f4c
 		summarizeBy: none
@@ -18,24 +20,27 @@ table DimDate
 
 		annotation SummarizationSetBy = Automatic
 
-	column month_no
+	/// Month number, 1 to 12; used to sort Month.
+	column 'Month Number'
 		dataType: int64
+		isHidden
 		lineageTag: 79cdb59b-a98b-502f-a610-0bb6bdaa9bfb
 		summarizeBy: none
 		sourceColumn: month_no
 
 		annotation SummarizationSetBy = Automatic
 
-	column MonthName
+	/// Month name, sorted by Month Number.
+	column Month
 		dataType: string
 		lineageTag: 88c7e8ca-dd88-5f98-88f3-0af0cc7179f7
 		summarizeBy: none
 		sourceColumn: MonthName
-		sortByColumn: month_no
+		sortByColumn: 'Month Number'
 
 		annotation SummarizationSetBy = Automatic
 
-	partition DimDate = m
+	partition Date = m
 		mode: import
 		source =
 				let

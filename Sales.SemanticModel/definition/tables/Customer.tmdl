@@ -1,15 +1,18 @@
-table DimCustomer
+table Customer
 	lineageTag: 93ec52b6-01a9-5502-aecd-e993e2ec567b
 
-	column cust_id
+	/// Key that links a customer to their sales.
+	column 'Customer Key'
 		dataType: int64
+		isHidden
 		lineageTag: 118b847a-eed5-5d9f-bda9-84894c4de36d
 		summarizeBy: none
 		sourceColumn: cust_id
 
 		annotation SummarizationSetBy = Automatic
 
-	column cust_name
+	/// The customer's company name.
+	column 'Customer Name'
 		dataType: string
 		lineageTag: 6e610a25-cf98-59ae-a534-c2e51f2561f2
 		summarizeBy: none
@@ -17,15 +20,18 @@ table DimCustomer
 
 		annotation SummarizationSetBy = Automatic
 
-	column cust_country
+	/// Country the customer is invoiced in.
+	column Country
 		dataType: string
+		displayFolder: Location
 		lineageTag: debaec10-fe60-5f69-b508-1e9ae5b78412
 		summarizeBy: none
 		sourceColumn: cust_country
 
 		annotation SummarizationSetBy = Automatic
 
-	column CustSegment
+	/// Customer segment: Enterprise, Mid-market or Small business.
+	column Segment
 		dataType: string
 		lineageTag: 2dfd7175-d716-5fcc-bb16-f51be97affde
 		summarizeBy: none
@@ -33,7 +39,7 @@ table DimCustomer
 
 		annotation SummarizationSetBy = Automatic
 
-	partition DimCustomer = m
+	partition Customer = m
 		mode: import
 		source =
 				let

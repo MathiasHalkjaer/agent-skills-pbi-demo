@@ -1,15 +1,18 @@
-table DimProduct
+table Product
 	lineageTag: ca9480e6-f5d2-516d-a20f-da7f9c1fb79b
 
-	column prod_id
+	/// Key that links a product to its sales.
+	column 'Product Key'
 		dataType: int64
+		isHidden
 		lineageTag: 3a265c77-5a6e-5067-be74-184dec989ccc
 		summarizeBy: none
 		sourceColumn: prod_id
 
 		annotation SummarizationSetBy = Automatic
 
-	column ProductName
+	/// The product's name as shown on invoices.
+	column 'Product Name'
 		dataType: string
 		lineageTag: 87f5d5ee-6281-509e-8759-9474b09fb3ff
 		summarizeBy: none
@@ -17,7 +20,8 @@ table DimProduct
 
 		annotation SummarizationSetBy = Automatic
 
-	column prod_category
+	/// Product category code: BIK bikes, ACC accessories, CLO clothing.
+	column Category
 		dataType: string
 		lineageTag: cad73798-9ab8-5d8c-862a-f32a01e1cdc5
 		summarizeBy: none
@@ -25,16 +29,18 @@ table DimProduct
 
 		annotation SummarizationSetBy = Automatic
 
-	column list_price
+	/// Price before discounts, in EUR.
+	column 'List Price'
 		dataType: double
 		formatString: #,0.00
+		displayFolder: Pricing
 		lineageTag: 51673971-a877-5995-a913-cbff1f68ceaf
 		summarizeBy: none
 		sourceColumn: list_price
 
 		annotation SummarizationSetBy = Automatic
 
-	partition DimProduct = m
+	partition Product = m
 		mode: import
 		source =
 				let

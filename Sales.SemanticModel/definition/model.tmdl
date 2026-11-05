@@ -8,9 +8,9 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
-annotation PBI_QueryOrder = ["DimCustomer", "DimProduct", "DimDate", "FactSales"]
+annotation PBI_QueryOrder = ["Customer", "Product", "Date", "Sales"]
 
-ref table DimCustomer
-ref table DimProduct
-ref table DimDate
-ref table FactSales
+ref table Customer
+ref table Product
+ref table Date
+ref table Sales
