@@ -1,0 +1,50 @@
+table DimDate
+	lineageTag: 5b8c5cd5-a5d2-5ea0-8f0c-1bad1f8dd2e8
+
+	column date_key
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 655c3ae2-40c5-53cb-a364-95490fa9dfe8
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column yr
+		dataType: int64
+		lineageTag: f6576c0c-a0b8-5ac8-9743-c5abc9289f4c
+		summarizeBy: none
+		sourceColumn: yr
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_no
+		dataType: int64
+		lineageTag: 79cdb59b-a98b-502f-a610-0bb6bdaa9bfb
+		summarizeBy: none
+		sourceColumn: month_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthName
+		dataType: string
+		lineageTag: 88c7e8ca-dd88-5f98-88f3-0af0cc7179f7
+		summarizeBy: none
+		sourceColumn: MonthName
+		sortByColumn: month_no
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimDate = m
+		mode: import
+		source =
+				let
+				    Dates = List.Dates(#date(2024, 1, 1), 731, #duration(1, 0, 0, 0)),
+				    AsTable = Table.FromList(Dates, Splitter.SplitByNothing(), type table [date_key = date]),
+				    Year = Table.AddColumn(AsTable, "yr", each Date.Year([date_key]), Int64.Type),
+				    MonthNo = Table.AddColumn(Year, "month_no", each Date.Month([date_key]), Int64.Type),
+				    MonthName = Table.AddColumn(MonthNo, "MonthName", each Date.MonthName([date_key], "en-US"), type text)
+				in
+				    MonthName
+
+	annotation PBI_ResultType = Table

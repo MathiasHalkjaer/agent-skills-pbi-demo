@@ -1,0 +1,11 @@
+relationship 99688565-2497-5460-b83f-cbbe45fd8778
+	fromColumn: FactSales.cust_id
+	toColumn: DimCustomer.cust_id
+
+relationship 38eb37b4-111d-5f6e-96d7-cd0ef819436f
+	fromColumn: FactSales.prod_id
+	toColumn: DimProduct.prod_id
+
+relationship c15a2ac7-998f-5d00-95cc-54108cea20f0
+	fromColumn: FactSales.order_date
+	toColumn: DimDate.date_key

@@ -1,0 +1,46 @@
+table DimProduct
+	lineageTag: ca9480e6-f5d2-516d-a20f-da7f9c1fb79b
+
+	column prod_id
+		dataType: int64
+		lineageTag: 3a265c77-5a6e-5067-be74-184dec989ccc
+		summarizeBy: none
+		sourceColumn: prod_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		lineageTag: 87f5d5ee-6281-509e-8759-9474b09fb3ff
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column prod_category
+		dataType: string
+		lineageTag: cad73798-9ab8-5d8c-862a-f32a01e1cdc5
+		summarizeBy: none
+		sourceColumn: prod_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column list_price
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 51673971-a877-5995-a913-cbff1f68ceaf
+		summarizeBy: none
+		sourceColumn: list_price
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimProduct = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table [prod_id = Int64.Type, ProductName = text, prod_category = text, list_price = number],
+				        {{1, "Road Bike 500", "BIK", 1450.0}, {2, "Mountain Bike 300", "BIK", 980.0}, {3, "Helmet Pro", "ACC", 89.0}, {4, "Bottle Cage", "ACC", 12.5}, {5, "Rain Jacket", "CLO", 129.0}, {6, "Cycling Gloves", "CLO", 35.0}})
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

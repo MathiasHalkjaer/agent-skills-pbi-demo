@@ -1,0 +1,45 @@
+table DimCustomer
+	lineageTag: 93ec52b6-01a9-5502-aecd-e993e2ec567b
+
+	column cust_id
+		dataType: int64
+		lineageTag: 118b847a-eed5-5d9f-bda9-84894c4de36d
+		summarizeBy: none
+		sourceColumn: cust_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column cust_name
+		dataType: string
+		lineageTag: 6e610a25-cf98-59ae-a534-c2e51f2561f2
+		summarizeBy: none
+		sourceColumn: cust_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column cust_country
+		dataType: string
+		lineageTag: debaec10-fe60-5f69-b508-1e9ae5b78412
+		summarizeBy: none
+		sourceColumn: cust_country
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustSegment
+		dataType: string
+		lineageTag: 2dfd7175-d716-5fcc-bb16-f51be97affde
+		summarizeBy: none
+		sourceColumn: CustSegment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimCustomer = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table [cust_id = Int64.Type, cust_name = text, cust_country = text, CustSegment = text],
+				        {{1, "Contoso Retail", "Denmark", "Enterprise"}, {2, "Fabrikam Cycles", "Italy", "Mid-market"}, {3, "Northwind Sport", "Germany", "Enterprise"}, {4, "Adatum Outdoor", "Italy", "Small business"}, {5, "Tailspin Bikes", "Sweden", "Mid-market"}, {6, "Wingtip Gear", "Denmark", "Small business"}})
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
