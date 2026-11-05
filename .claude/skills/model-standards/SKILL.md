@@ -36,3 +36,6 @@ For style and patterns, read references/dax-style.md.
 
 ## Decisions
 Before deciding something the glossary doesn't cover, read references/decisions.md.
+
+## Before you finish
+Run `python .claude/skills/model-standards/scripts/check_names.py` and fix everything it reports.
