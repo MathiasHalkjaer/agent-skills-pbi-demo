@@ -3,7 +3,7 @@
 The demo project for the session **Advanced Agent Skills for Power BI**. A small, messy Sales
 model in PBIP format, and a skill that cleans it up, built one piece per git tag.
 
-- **Slides:** https://mathiashalkjaer.github.io/Presentations/advanced-agent-skills-for-power-bi/
+- **Slides:** https://mathiashalkjaer.github.io/Presentations/advanced-agent-skills-for-power-bi/slides/
 - **Field guide:** https://mathiashalkjaer.github.io/Presentations/advanced-agent-skills-for-power-bi/guide/
 
 Every demo slide has the full steps and prompts for that demo: press **D** to show them.
